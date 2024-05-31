@@ -11,39 +11,37 @@ class userRegistrationService {
                 const randomPart = Math.floor(Math.random() * 1e6); // Generate a random number between 0 and 999999
                 return `image_${datePart}_${randomPart}.png`;
             };
-            
+            var imageBuffer2,imagePath2,imageBuffer3,imagePath3;
             const imageBuffer = Buffer.from(imageFile, 'base64');
             const imagePath = path.join(__dirname, 'uploads',await getUniqueFilename());
-            
-            const imageBuffer2 = Buffer.from(imageFile2, 'base64');
-            const imagePath2 = path.join(__dirname, 'uploads',await getUniqueFilename());
-            
-            const imageBuffer3 = Buffer.from(imageFile3, 'base64');
-            const imagePath3 = path.join(__dirname, 'uploads',await getUniqueFilename());
-            
+            if(imageFile2!=null){
+            imageBuffer2 = Buffer.from(imageFile2, 'base64');
+            imagePath2 = path.join(__dirname, 'uploads',await getUniqueFilename());
+            }
+            if(imageFile3!=null){
+            imageBuffer3 = Buffer.from(imageFile3, 'base64');
+            imagePath3 = path.join(__dirname, 'uploads',await getUniqueFilename());
+            }
             if (!fs.existsSync(path.join(__dirname, 'uploads'))) {
-                console.log("did this");
                 fs.mkdirSync(path.join(__dirname, 'uploads'));
             }
+            console.log("Yha tak aaya");
             await fs.writeFile(imagePath, imageBuffer, async (err) => {
                 if (err) {
-                    console.error(err);
-                    return { status: "failure", msg: `Error Here ${err}` };
+                    return { status: "failure", msg: `${err}` };
                 }
             });
             if(imageFile2!=null){
             await fs.writeFile(imagePath2, imageBuffer2, async (err) => {
                 if (err) {
-                    console.error(err);
-                    return { status: "failure", msg: `Error Here ${err}` };
+                    return { status: "failure", msg: `${err}` };
                 }
             });
             }
             if(imageFile3!=null){
             await fs.writeFile(imagePath3, imageBuffer3, async (err) => {
                 if (err) {
-                    console.error(err);
-                    return { status: "failure", msg: `Error Here ${err}` };
+                    return { status: "failure", msg: `${err}` };
                 }
             });
         }   
@@ -67,15 +65,11 @@ class userRegistrationService {
                     const userId = userIdresp.rows[0].userid;
                     const finalResp = await db.query("INSERT INTO data(userId,fullName,dateOfBirth,country,gender,instaId,snapchatId,imageFile,imageFile2,imageFile3,preferredCountry,preferredGender) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12)",
                         [userId, name, dateOfBirth, country, gender, instaId, snapchatId, imagePath, imagePath2, imagePath3, preferredCountry, preferredGender]);
-                    // console.log(finalResp);
-                    await console.log("Query Executed");
-                    await console.log(userId);
-                    return await { status: "success", msg: "Registration Successful", statusCode: 200, userId: userId };
+                    return { status: "success", msg: "Registration Successful", statusCode: 200, userId: userId };
                 }
 
         } catch (err) {
-            // await db.query("DELETE * FROM users WHERE userid=$1",[userId]);
-            return { status: "failure", msg: `Nhi here ${err}` };
+            return { status: "failure", msg: `${err}` };
         }
     }
 
