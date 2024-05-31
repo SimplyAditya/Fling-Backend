@@ -2,10 +2,40 @@ import userRegistrationService from "../services/userRegistrationService.js";
 
 
 const registerUser = async (req,res,next)=>{
-    const email=req.body.email;
-    const password=req.body.password;
+    const {email,password,fullName,dateofBirth,country,gender,instaId,snapchatId,imageFile,imageFile2,imageFile3,preferredCountry,preferredGender}=req.body;
     try{
-        const msg=await userRegistrationService.registerUser(email,password);
+        const msg=await userRegistrationService.registerUser(email,password,fullName,dateofBirth,country,gender,instaId,snapchatId,imageFile,imageFile2,imageFile3,preferredCountry,preferredGender);
+        console.log(msg);
+        res.json({msg});
+    }
+    catch(err){
+        return {status:"failure",msg:err};
+    }
+}
+const verifyImage = async(req,res,next)=>{
+    const {imageFile,imageFile2,imageFile3}=req.body;
+    try{
+        const msg=await userRegistrationService.checkExistingImage(imageFile,imageFile2,imageFile3);
+        res.json({msg});
+    }
+    catch(err){
+        return {status:"failure",msg:err};
+    }
+}
+const verifyInsta = async(req,res,next)=>{
+    const {instaId}=req.body;
+    try{
+        const msg=await userRegistrationService.checkInsta(instaId);
+        res.json({msg});
+    }
+    catch(err){
+        return {status:"failure",msg:err};
+    }
+}
+const verifySnap = async(req,res,next)=>{
+    const {snapchatId}=req.body;
+    try{
+        const msg=await userRegistrationService.checkSnap(snapchatId);
         res.json({msg});
     }
     catch(err){
@@ -13,4 +43,4 @@ const registerUser = async (req,res,next)=>{
     }
 }
 
-export default {registerUser};
+export default {registerUser,verifyImage,verifyInsta,verifySnap};
