@@ -5,7 +5,6 @@ const registerUser = async (req,res,next)=>{
     const {email,password,fullName,dateofBirth,country,gender,instaId,snapchatId,imageFile,imageFile2,imageFile3,preferredCountry,preferredGender}=req.body;
     try{
         const msg=await userRegistrationService.registerUser(email,password,fullName,dateofBirth,country,gender,instaId,snapchatId,imageFile,imageFile2,imageFile3,preferredCountry,preferredGender);
-        console.log(msg);
         res.json({msg});
     }
     catch(err){
