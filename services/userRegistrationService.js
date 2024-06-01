@@ -3,7 +3,7 @@ import fs from "fs";
 import path from "path";
 const __dirname = path.resolve();
 class userRegistrationService {
-    static async registerUser(email, password, name, dateOfBirth, country, gender, instaId, snapchatId, imageFile, imageFile2, imageFile3, preferredCountry, preferredGender) {
+    static async registerUser(email, password, name, dateOfBirth, country, gender,maingender, instaId, snapchatId, imageFile, imageFile2, imageFile3, preferredCountry, preferredGender,prefGender) {
         try {
             const getUniqueFilename = () => {
                 const now = new Date();
@@ -53,12 +53,13 @@ class userRegistrationService {
 
             const userIdresp = await db.query("INSERT INTO users (email,password) VALUES($1,$2) RETURNING userId", [email, password]);
             const userId = userIdresp.rows[0].userid;
-            await db.query("INSERT INTO data(userId,fullName,dateOfBirth,country,gender,instaId,snapchatId,imageFile,imageFile2,imageFile3,preferredCountry,preferredGender) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12)",
-                [userId, name, dateOfBirth, country, gender, instaId, snapchatId, imagePath, imagePath2, imagePath3, preferredCountry, preferredGender]);
+            await db.query("INSERT INTO data(userId,fullName,dateOfBirth,country,gender,maingender,instaId,snapchatId,imageFile,imageFile2,imageFile3,preferredCountry,preferredGender,prefgender) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14)",
+                [userId, name, dateOfBirth, country, gender,maingender, instaId, snapchatId, imagePath, imagePath2, imagePath3, preferredCountry, preferredGender,prefGender]);
             return { status: "success", msg: "Registration Successful", statusCode: 200, userId: userId };
 
 
         } catch (err) {
+            console.log("Here",err);
             return { status: "failure", msg: `${err}` };
         }
     }
