@@ -6,6 +6,8 @@ import swipeController from "../controller/swipeController.js";
 import FriendController from"../controller/FriendController.js";
 import deleteUserController from "../controller/deleteUserController.js";
 import gemController from "../controller/gemController.js";
+import getUserInfoController from "../controller/getUserInfoController.js";
+import updateUserInfoController from "../controller/updateUserInfoController.js";
 
 
 const router=Router();
@@ -24,5 +26,14 @@ router.get("/getGemCount",gemController.gemCountController);
 router.post("/remove10gems",gemController.remove10gemsController);
 router.post("/addGems",gemController.purchaseGemsController);
 router.post("/addViaClaimButton",gemController.addViaClaimButton);
+router.get("/getProfile",getUserInfoController.getUserInfoController);
+router.get("/getProfile/name",getUserInfoController.getNameController);
+router.get("/getProfile/country",getUserInfoController.getCountryController);
+router.get("/getProfile/gender",getUserInfoController.getGenderController);
+router.get("/getProfile/insta",getUserInfoController.getInstaController);
+router.get("/getProfile/snap",getUserInfoController.getSnapController);
+router.get("/getProfile/preferredCountry",getUserInfoController.getPreferredCountryController);
+router.get("/getProfile/preferredGender",getUserInfoController.getPreferredGenderController);
+router.post("/updateUserInfo",updateUserInfoController.updateInfoController);
 
 export default router;
