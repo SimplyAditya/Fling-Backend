@@ -1,3 +1,4 @@
+import moment from "moment-timezone";
 import db from "../app.js";
 import getUserInfoService from "./getUserInfoService.js";
 
@@ -9,7 +10,8 @@ class updateUserInfoService{
                 await db.query("UPDATE data SET fullname = $1 WHERE userid=$2",[fullName,uId]);
             }
             if(existingUserData.dateOfBirth!=dateOfBirth && dateOfBirth!=null){
-                await db.query("UPDATE data SET dateofbirth = $1 WHERE userid=$2",[dateOfBirth,uId]);
+                const istDateOfBirth = moment.tz(dateOfBirth, 'Asia/Kolkata').format('YYYY-MM-DD');
+                await db.query("UPDATE data SET dateofbirth = $1 WHERE userid=$2",[istDateOfBirth,uId]);
             }
             if(existingUserData.country!=country && country!=null){
                 await db.query("UPDATE data SET country = $1 WHERE userid=$2",[country,uId]);

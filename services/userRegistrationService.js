@@ -1,6 +1,7 @@
 import db from "../app.js";
 import fs from "fs";
 import path from "path";
+import moment from "moment-timezone";
 const __dirname = path.resolve();
 class userRegistrationService {
     static async registerUser(email, password, name, dateOfBirth, country, gender,maingender, instaId, snapchatId, imageFile, imageFile2, imageFile3, preferredCountry, preferredGender,prefGender) {
@@ -50,11 +51,12 @@ class userRegistrationService {
             if (imageFile3 == null) {
                 imagePath3 = null;
             }
-
+            console.log(dateOfBirth);
+            const istDateOfBirth = moment.tz(dateOfBirth, 'Asia/Kolkata').format('YYYY-MM-DD');
             const userIdresp = await db.query("INSERT INTO users (email,password) VALUES($1,$2) RETURNING userId", [email, password]);
             const userId = userIdresp.rows[0].userid;
             await db.query("INSERT INTO data(userId,fullName,dateOfBirth,country,gender,maingender,instaId,snapchatId,imageFile,imageFile2,imageFile3,preferredCountry,preferredGender,prefgender) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14)",
-                [userId, name, dateOfBirth, country, gender,maingender, instaId, snapchatId, imagePath, imagePath2, imagePath3, preferredCountry, preferredGender,prefGender]);
+                [userId, name, istDateOfBirth, country, gender,maingender, instaId, snapchatId, imagePath, imagePath2, imagePath3, preferredCountry, preferredGender,prefGender]);
             return { status: "success", msg: "Registration Successful", statusCode: 200, userId: userId };
 
 
