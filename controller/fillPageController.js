@@ -13,5 +13,11 @@ const fillFriendsPageController = async (req,res,next)=>{
     res.json({msg});
 }
 
+const fillUsersPageController = async (req,res,next)=>{
+    const {uId}=req.body;
+    const msg =await fillPageService.fillUsersPage(uId);
+    res.json({msg});
+}
 
-export default {fillRequestsPageController,fillFriendsPageController};
+
+export default {fillRequestsPageController,fillFriendsPageController,fillUsersPageController};

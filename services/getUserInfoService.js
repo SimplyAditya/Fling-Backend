@@ -25,6 +25,15 @@ class getUserInfoService{
         return istDateOfBirth;
     }
 
+    static async getAge(userId){
+        let userData =await db.query("SELECT dateofbirth FROM data where userid=$1",[userId]);
+        const istDateOfBirth = moment(userData.rows[0].dateofbirth).tz('Asia/Kolkata').format('YYYY-MM-DD');
+        var now = new Date();
+        var age = moment().diff(istDateOfBirth, 'years');
+        if (moment() < moment(now.setFullYear(now.getFullYear() - age)).valueOf()) age--;
+        return age;
+    }
+
     static async getCountry(userId){
         let userData =await db.query("SELECT country FROM data where userid=$1",[userId]);
         return userData.rows[0].country;

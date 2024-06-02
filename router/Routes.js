@@ -30,6 +30,7 @@ router.post("/addViaClaimButton",gemController.addViaClaimButton);
 router.post("/getProfile",getUserInfoController.getUserInfoController);
 router.post("/getProfile/name",getUserInfoController.getNameController);
 router.post("/getProfile/dateOfBirth",getUserInfoController.getDateOfBirthController);
+router.post("/getProfile/age",getUserInfoController.getAgeController);
 router.post("/getProfile/country",getUserInfoController.getCountryController);
 router.post("/getProfile/gender",getUserInfoController.getGenderController);
 router.post("/getProfile/insta",getUserInfoController.getInstaController);
@@ -39,5 +40,6 @@ router.post ("/getProfile/preferredGender",getUserInfoController.getPreferredGen
 router.post("/updateUserInfo",updateUserInfoController.updateInfoController);
 router.post("/checkRequests",fillPageController.fillRequestsPageController);
 router.post("/checkFriends",fillPageController.fillFriendsPageController);
+router.post("/checkUsers",fillPageController.fillUsersPageController);
 
 export default router;

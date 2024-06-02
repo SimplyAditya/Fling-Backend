@@ -1,9 +1,7 @@
 import db from "../app.js";
-import deleteOldRows from "./deleteOldRows.js";
 
 class SwipeService {
     static async leftSwipeUser(uIdWhoDid, uIdWhoGot) {
-        deleteOldRows.deleteOldRows();
         await db.query("INSERT INTO leftSwipeUsers(userwhoswiped,userwhogotswiped) VALUES ($1,$2)",
             [uIdWhoDid, uIdWhoGot]);
 
