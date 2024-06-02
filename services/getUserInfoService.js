@@ -102,6 +102,11 @@ class getUserInfoService{
         return userData.rows[0].fullname;
     }
 
+    static async getGemCount(userId){
+        let userData =await db.query("SELECT gemcount FROM data where userid=$1",[userId]);
+        return userData.rows[0].gemcount;
+    }
+
     static async getDateOfBirth(userId){
         let userData =await db.query("SELECT dateofbirth FROM data where userid=$1",[userId]);
         const istDateOfBirth = moment(userData.rows[0].dateofbirth).tz('Asia/Kolkata').format('YYYY-MM-DD');
@@ -114,7 +119,6 @@ class getUserInfoService{
         var now = new Date();
         var age = moment().diff(istDateOfBirth, 'years');
         if (moment() < moment(now.setFullYear(now.getFullYear() - age)).valueOf()) age--;
-        console.log(age);
         return age;
     }
 

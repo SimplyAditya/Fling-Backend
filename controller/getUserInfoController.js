@@ -24,6 +24,12 @@ const getDateOfBirthController=async(req,res,next)=>{
     res.json({msg});
 };
 
+const getGemCountController=async(req,res,next)=>{
+    const {uId}=req.body;
+    const msg=await getUserInfoService.getGemCount(uId);
+    res.json({msg});
+};
+
 const getAgeController=async(req,res,next)=>{
     const {uId}=req.body;
     const msg=await getUserInfoService.getAge(uId);
@@ -63,4 +69,4 @@ const getPreferredGenderController=async(req,res,next)=>{
 };
 
 
-export default {getUserInfoController,getNameController,getUserIDController,getDateOfBirthController,getAgeController,getCountryController,getGenderController,getInstaController,getSnapController,getPreferredCountryController,getPreferredGenderController};
+export default {getUserInfoController,getNameController,getUserIDController,getGemCountController,getDateOfBirthController,getAgeController,getCountryController,getGenderController,getInstaController,getSnapController,getPreferredCountryController,getPreferredGenderController};

@@ -33,6 +33,7 @@ router.post("/getProfile/name",getUserInfoController.getNameController);
 router.post("/getProfile/dateOfBirth",getUserInfoController.getDateOfBirthController);
 router.post("/getProfile/age",getUserInfoController.getAgeController);
 router.post("/getProfile/country",getUserInfoController.getCountryController);
+router.post("/getProfile/gems",getUserInfoController.getGemCountController);
 router.post("/getProfile/gender",getUserInfoController.getGenderController);
 router.post("/getProfile/insta",getUserInfoController.getInstaController);
 router.post("/getProfile/snap",getUserInfoController.getSnapController);

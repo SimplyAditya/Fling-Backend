@@ -38,7 +38,6 @@ class fillPageService {
 
     static async fillUsersPage(uId) {
         try{
-        console.log(uId);
         const userPreferences = await db.query("SELECT preferredcountry, preferredgender, prefgender FROM data WHERE userid=$1", [uId]);
         const { preferredcountry, preferredgender, prefgender } = userPreferences.rows[0];
     
