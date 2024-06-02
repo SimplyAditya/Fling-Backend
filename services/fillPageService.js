@@ -37,90 +37,101 @@ class fillPageService {
     }
 
     static async fillUsersPage(uId) {
-        deleteOldRows.deleteOldRows();
-        const userPreferences = await db.query("SELECT preferredcountry,preferredgender,prefgender from data where userid=$1", [uId]);
+        try{
+        console.log(uId);
+        const userPreferences = await db.query("SELECT preferredcountry, preferredgender, prefgender FROM data WHERE userid=$1", [uId]);
         const { preferredcountry, preferredgender, prefgender } = userPreferences.rows[0];
-
-        let query = `
-            SELECT userid FROM data 
-            WHERE userid != $1
-        `;
+    
+        let query = `SELECT userid FROM data WHERE userid != $1`;
         let queryParams = [uId];
-
+    
         if (preferredcountry.toLowerCase() !== "everywhere") {
             query += " AND preferredcountry = $2";
             queryParams.push(preferredcountry);
         }
-
+    
         if (prefgender) {
-            query += queryParams.length === 1 ? " AND gender = $2" : " AND gender = $3";
+            query += queryParams.length === 2 ? " AND gender = $3" : " AND gender = $2";
             queryParams.push(prefgender);
         } else {
-            query += queryParams.length === 1 ? " AND maingender = $2" : " AND maingender = $3";
+            query += queryParams.length === 2 ? " AND maingender = $3" : " AND maingender = $2";
             queryParams.push(preferredgender);
         }
-
+    
         let preferredUsers = await db.query(query, queryParams);
-
-
+    
         // Remove country constraint if no users found
         if (preferredUsers.rows.length === 0 && preferredcountry.toLowerCase() !== "everywhere") {
-            query = query.replace(" AND preferredcountry = $2", "");
+            query = `SELECT userid FROM data WHERE userid != $1`;
             queryParams = [uId];
-
+    
             if (prefgender) {
-                query = query.replace(" AND gender = $3", " AND gender = $2");
+                query += " AND gender = $2";
                 queryParams.push(prefgender);
             } else {
-                query = query.replace(" AND maingender = $3", " AND maingender = $2");
+                query += " AND maingender = $2";
                 queryParams.push(preferredgender);
             }
-
+    
             preferredUsers = await db.query(query, queryParams);
         }
-
+    
         // Remove prefgender constraint if no users found and prefgender is not null
         if (preferredUsers.rows.length === 0 && prefgender) {
+            query = `SELECT userid FROM data WHERE userid != $1`;
             queryParams = [uId];
+            
             if (preferredcountry.toLowerCase() !== "everywhere") {
+                query += " AND preferredcountry = $2";
                 queryParams.push(preferredcountry);
+                query += " AND maingender = $3";
+                queryParams.push(preferredgender);
+            } else {
+                query += " AND maingender = $2";
+                queryParams.push(preferredgender);
             }
-            query = query.replace(" AND gender = $2", "");
-            queryParams.push(preferredgender ? prefgender : preferredgender);
-
+    
             preferredUsers = await db.query(query, queryParams);
         }
-
-        // Remove gender constraint if no users found
+    
+        // Remove all gender constraints if no users found
         if (preferredUsers.rows.length === 0) {
+            query = `SELECT userid FROM data WHERE userid != $1`;
             queryParams = [uId];
+            
             if (preferredcountry.toLowerCase() !== "everywhere") {
+                query += " AND preferredcountry = $2";
                 queryParams.push(preferredcountry);
             }
-            query = query.replace(" AND gender = $2", "")
-                .replace(" AND maingender = $2", "")
-                .replace(" AND gender = $3", "")
-                .replace(" AND maingender = $3", "");
-
+    
             preferredUsers = await db.query(query, queryParams);
         }
-
+    
+        // If still no users found, return all users except the given user
+        if (preferredUsers.rows.length === 0) {
+            preferredUsers = await db.query("SELECT userid FROM data WHERE userid != $1", [uId]);
+        }
+    
         const msg = new Array(preferredUsers.rows.length);
         for (let i = 0; i < preferredUsers.rowCount; i++) {
             msg[i] = preferredUsers.rows[i].userid;
         }
-
-        const leftswiped=await db.query("SELECT userwhogotswiped from leftswipeusers where userwhoswiped =$1",[uId]);
+    
+        const leftswiped = await db.query("SELECT userwhogotswiped FROM leftswipeusers WHERE userwhoswiped = $1", [uId]);
         const exclusions = new Array(leftswiped.rows.length);
         for (let i = 0; i < leftswiped.rowCount; i++) {
             exclusions[i] = leftswiped.rows[i].userwhogotswiped;
         }
-
+    
         const filteredMsg = msg.filter(userid => !exclusions.includes(userid));
-
+    
         return filteredMsg;
-
     }
+    catch(err){
+        console.log(err);
+    }
+    }
+    
 
 }
 
