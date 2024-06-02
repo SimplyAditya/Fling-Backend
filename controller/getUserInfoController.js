@@ -9,13 +9,13 @@ const getUserInfoController=async(req,res,next)=>{
 const getNameController=async(req,res,next)=>{
     const {uId}=req.body;
     const msg=await getUserInfoService.getName(uId);
-    res.json(msg);
+    res.json({msg});
 };
 
 const getDateOfBirthController=async(req,res,next)=>{
     const {uId}=req.body;
     const msg=await getUserInfoService.getDateOfBirth(uId);
-    res.json(msg);
+    res.json({msg});
 };
 
 const getCountryController=async(req,res,next)=>{

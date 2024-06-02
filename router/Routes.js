@@ -8,6 +8,7 @@ import deleteUserController from "../controller/deleteUserController.js";
 import gemController from "../controller/gemController.js";
 import getUserInfoController from "../controller/getUserInfoController.js";
 import updateUserInfoController from "../controller/updateUserInfoController.js";
+import fillPageController from "../controller/fillPageController.js";
 
 
 const router=Router();
@@ -36,5 +37,7 @@ router.post("/getProfile/snap",getUserInfoController.getSnapController);
 router.post("/getProfile/preferredCountry",getUserInfoController.getPreferredCountryController);
 router.post ("/getProfile/preferredGender",getUserInfoController.getPreferredGenderController);
 router.post("/updateUserInfo",updateUserInfoController.updateInfoController);
+router.post("/checkRequests",fillPageController.fillRequestsPageController);
+router.post("/checkFriends",fillPageController.fillFriendsPageController);
 
 export default router;
